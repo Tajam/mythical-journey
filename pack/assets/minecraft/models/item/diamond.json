@@ -1,0 +1,9 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "minecraft:item/diamond"
+  },
+  "overrides": [
+    { "predicate": { "custom-model-data": 1 }, "model": "materials/crystals/shard_of_overworld"}
+  ]
+}

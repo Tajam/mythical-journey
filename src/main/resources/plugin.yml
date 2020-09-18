@@ -1,0 +1,5 @@
+main: mmu.minecraft.mj.MythicalJourney
+name: MythicalJourney
+author: Tajam
+version: 1.0.0
+api-version: 1.16
