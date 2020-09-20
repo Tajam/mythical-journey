@@ -1,6 +1,9 @@
 package mmu.minecraft.mj.recipe;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
@@ -15,7 +18,7 @@ import mmu.minecraft.mj.MythNamespace;
 
 public abstract class MythRecipeDefinition {
   
-  private static RecipeTree tree;
+  private static RecipeTree tree = new RecipeTree();
 
   public static ItemStack getResult(ItemStack[] items) {
     return tree.getResult(items);
@@ -27,15 +30,19 @@ public abstract class MythRecipeDefinition {
     if (server.getRecipe(key) == null) {
       final ShapedRecipe recipe = new ShapedRecipe(key, getDummyItem());
       final RecipeMaterial[] materials = getRecipeMaterials();
+      final Map<Character, Material> ingredients = new HashMap<>();
       final String[] shape = new String[3];
       Arrays.fill(shape, "");
       for (int i = 0; i < materials.length; i++) {
         final char c = (char)('0' + i);
         shape[i / 3] += c;
         if (materials[i] == null) continue;
-        recipe.setIngredient(c, materials[i].getMaterial());
+        ingredients.put(c, materials[i].getMaterial());
       }
       recipe.shape(shape);
+      for (Entry<Character, Material> entrySet : ingredients.entrySet()) {
+        recipe.setIngredient(entrySet.getKey(), entrySet.getValue());
+      }
       tree.addBranch(materials, getResult());
     }
   }
@@ -47,7 +54,7 @@ public abstract class MythRecipeDefinition {
   final private String generateKey() {
     String key = MythNamespace.MYTH_RECIPE.getKey() + '_';
     for (RecipeMaterial recipeMaterial : getRecipeMaterials()) {
-      final int value = recipeMaterial.getMythItem().getMaterial().hashCode();
+      final int value = recipeMaterial.getMaterial().hashCode();
       key += value;
     }
     return key;

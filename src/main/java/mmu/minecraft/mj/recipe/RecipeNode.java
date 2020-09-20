@@ -19,7 +19,9 @@ public class RecipeNode {
     if (this.childs.containsKey(material)) {
       return this.getChild(material);
     }
-    return this.childs.put(material, new RecipeNode());
+    final RecipeNode node = new RecipeNode();
+    this.childs.put(material, node);
+    return node;
   }
 
   public RecipeNode getChild(RecipeMaterial material) {

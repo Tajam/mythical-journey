@@ -18,11 +18,11 @@ public class RecipeMaterial {
     this(material, null, true);
   }
 
-  public RecipeMaterial(final MythItem mythItem) {
+  public RecipeMaterial(MythItem mythItem) {
     this(mythItem.getMaterial(), mythItem, false);
   }
 
-  public RecipeMaterial(final ItemStack item) {
+  public RecipeMaterial(ItemStack item) {
     final PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
     if (container.has(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING)) {
       final MythItem mythItem = MythItem.getItemById(
@@ -38,7 +38,7 @@ public class RecipeMaterial {
     this.isBase = true;
   }
 
-  private RecipeMaterial(final Material material, final MythItem mythItem, final boolean isBase) {
+  private RecipeMaterial(Material material, MythItem mythItem, boolean isBase) {
     this.material = material;
     this.mythItem = mythItem;
     this.isBase = isBase;
