@@ -46,11 +46,12 @@ public enum MythItem {
 
   ;
 
-  private static Map<String, MythItem> mythMaterialMap = new HashMap<>();
+  private static Map<String, MythItem> mythMaterialMap;
 
-  private static void registerItem(MythItem material) {
-    if (!mythMaterialMap.containsKey(material.toString())) {
-      mythMaterialMap.put(material.toString(), material);
+  private static void registerItem(MythItem mythItem) {
+    if (mythMaterialMap == null) mythMaterialMap = new HashMap<>();
+    if (!mythMaterialMap.containsKey(mythItem.toString())) {
+      mythMaterialMap.put(mythItem.toString(), mythItem);
       return;
     }
     throw new UnsupportedOperationException("Non unique name registration.");
@@ -96,6 +97,11 @@ public enum MythItem {
     container.set(MythNamespace.MYTH_GROUP_TYPE.get(), PersistentDataType.STRING, getDefinition().getGroupType());
     item.setItemMeta(meta);
     return getDefinition().toItemStackExt(item);
+  }
+
+  @Override
+  public String toString() {
+    return super.name().toLowerCase();
   }
 
 }
