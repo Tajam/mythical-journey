@@ -13,7 +13,7 @@ public class RecipeTree {
   public void addBranch(RecipeMaterial[] materials, ItemStack result) {
     RecipeNode node = this.root;
     for (final RecipeMaterial material : materials) {
-      node = node.addChild(material);;
+      node = node.addChild(material);
     }
     node.setResult(result);
   }

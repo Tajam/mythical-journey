@@ -48,7 +48,7 @@ public enum MythItem {
 
   private static Map<String, MythItem> mythMaterialMap;
 
-  private static void registerItem(MythItem mythItem) {
+  private static void register(MythItem mythItem) {
     if (mythMaterialMap == null) mythMaterialMap = new HashMap<>();
     if (!mythMaterialMap.containsKey(mythItem.toString())) {
       mythMaterialMap.put(mythItem.toString(), mythItem);
@@ -61,13 +61,26 @@ public enum MythItem {
     return mythMaterialMap.get(id);
   }
 
+  public static MythItem getItemByItemStack(ItemStack itemStack) {
+    if (itemStack == null) return null;
+    final PersistentDataContainer container = itemStack.getItemMeta().getPersistentDataContainer();
+    if (container.has(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING)) {
+      final MythItem mythItem = getItemById(
+        container.get(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING)
+      );
+      return mythItem;
+    }
+    return null;
+  }
+
   private MythItemDefinition definition;
   private Material material;
   private int customModelData;
 
   private MythItem(MythItemDefinition definition, Material material, int customModelData) {
     this.definition = definition;
-    MythItem.registerItem(this);
+    this.material = material;
+    register(this);
   }
 
   public MythItemDefinition getDefinition() {
@@ -88,12 +101,12 @@ public enum MythItem {
     meta.setCustomModelData(getCustomModelData());
     meta.setDisplayName(getDefinition().getRarity().applyFormat(getDefinition().getDisplayName()));
     meta.setLore(Arrays.asList(new String[] {
-      ChatColor.ITALIC + getDefinition().getRarity().getName() + ChatColor.RESET,
+      getDefinition().getRarity().getName() + ChatColor.RESET,
       ChatColor.GRAY + getDefinition().getDescription() + ChatColor.RESET,
       ChatColor.DARK_GRAY + getDefinition().getLore() + ChatColor.RESET
     }));
     final PersistentDataContainer container = meta.getPersistentDataContainer();
-    container.set(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING, getMaterial().toString());
+    container.set(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING, toString());
     container.set(MythNamespace.MYTH_GROUP_TYPE.get(), PersistentDataType.STRING, getDefinition().getGroupType());
     item.setItemMeta(meta);
     return getDefinition().toItemStackExt(item);

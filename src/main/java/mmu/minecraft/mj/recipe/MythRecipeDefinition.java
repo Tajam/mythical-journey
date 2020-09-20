@@ -43,8 +43,9 @@ public abstract class MythRecipeDefinition {
       for (Entry<Character, Material> entrySet : ingredients.entrySet()) {
         recipe.setIngredient(entrySet.getKey(), entrySet.getValue());
       }
-      tree.addBranch(materials, getResult());
+      server.addRecipe(recipe);
     }
+    tree.addBranch(getRecipeMaterials(), getResult());
   }
 
   protected abstract RecipeMaterial[] getRecipeMaterials();

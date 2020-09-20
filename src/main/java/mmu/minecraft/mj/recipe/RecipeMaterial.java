@@ -2,10 +2,7 @@ package mmu.minecraft.mj.recipe;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.persistence.PersistentDataContainer;
-import org.bukkit.persistence.PersistentDataType;
 
-import mmu.minecraft.mj.MythNamespace;
 import mmu.minecraft.mj.item.MythItem;
 
 public class RecipeMaterial {
@@ -23,19 +20,16 @@ public class RecipeMaterial {
   }
 
   public RecipeMaterial(ItemStack item) {
-    final PersistentDataContainer container = item.getItemMeta().getPersistentDataContainer();
-    if (container.has(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING)) {
-      final MythItem mythItem = MythItem.getItemById(
-        container.get(MythNamespace.MYTH_ITEM.get(), PersistentDataType.STRING)
-      );
-      this.material = mythItem.getMaterial();
-      this.mythItem = mythItem;
-      this.isBase = false;
+    final MythItem mythItem = MythItem.getItemByItemStack(item);
+    if (mythItem == null) {
+      this.material = item.getType();
+      this.mythItem = null;
+      this.isBase = true;
       return;
     }
-    this.material = item.getType();
-    this.mythItem = null;
-    this.isBase = true;
+    this.material = mythItem.getMaterial();
+    this.mythItem = mythItem;
+    this.isBase = false;
   }
 
   private RecipeMaterial(Material material, MythItem mythItem, boolean isBase) {
@@ -65,7 +59,7 @@ public class RecipeMaterial {
   public boolean equals(Object object) {
     if (this == object) return true;
     if (object == null) return false;
-    if (getClass() != object.getClass()) return false;
+    if (!(object instanceof RecipeMaterial)) return false;
     RecipeMaterial other = (RecipeMaterial) object;
     if (isBase != other.isBase) return false;
     if (isBase) {
