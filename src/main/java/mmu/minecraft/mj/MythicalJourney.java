@@ -4,6 +4,7 @@ import org.bukkit.GameRule;
 import org.bukkit.World;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import mmu.minecraft.mj.command.MythCommand;
 import mmu.minecraft.mj.listener.MythListener;
 import mmu.minecraft.mj.recipe.MythRecipe;
 
@@ -33,6 +34,9 @@ public class MythicalJourney extends JavaPlugin {
 
     // register recipes
     MythRecipe.register(this);
+
+    // register commands
+    MythCommand.register(this);
 
     super.onEnable();
   }

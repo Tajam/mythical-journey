@@ -3,3 +3,26 @@ name: MythicalJourney
 author: Tajam
 version: 1.0.0
 api-version: 1.16
+
+commands:
+  mgive:
+    description: Get the specified custom music disc.
+    permission: mj.give
+    usage: /mgive [selector] [name] [amount]
+  mspawn:
+    description: Give the specified custom music disc to player(s).
+    permission: mj.spawn
+    usage: /mspawn [X] [Y] [Z] [name]
+
+permissions:
+  mj.*:
+    description: Gives access to all Mythical Journey commands.
+    children:
+      mj.give: true
+      mj.spawn: true
+  mj.give:
+    description: Allow player to access all Mythical Journey items.
+    default: op
+  mj.spawn:
+    description: Allow player to spawn Mythical Journey monsters.
+    default: op
