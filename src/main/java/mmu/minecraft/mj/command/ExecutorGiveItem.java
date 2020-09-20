@@ -20,7 +20,6 @@ public class ExecutorGiveItem extends ExecutorAdapter {
 
   @Override
   public boolean executePlayer(Player sender, String[] args) {
-    new Log().info().t("This command is only for ").t().t(".").send(sender, "console");
     return execute(sender, args);
   }
 
